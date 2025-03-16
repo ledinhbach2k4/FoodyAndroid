@@ -1,6 +1,6 @@
 package bach.dev.foody.data.entities;
 
-public class Product {
+public class ProductDto {
     private int id;
     private String name;
     private String description;
@@ -9,7 +9,7 @@ public class Product {
     private int quantity;
     private int categoryId;
 
-    public Product(int id, String name, String description, String thumbnail, double price, int quantity, int categoryId) {
+    public ProductDto(int id, String name, String description, String thumbnail, double price, int quantity, int categoryId) {
         this.id = id;
         this.name = name;
         this.description = description;

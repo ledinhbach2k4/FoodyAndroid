@@ -15,13 +15,13 @@ import java.util.List;
 
 import bach.dev.foody.ProductActivity;
 import bach.dev.foody.R;
-import bach.dev.foody.data.entities.Product;
+import bach.dev.foody.data.entities.ProductDto;
 import bach.dev.foody.util.Constants;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {
-    private List<Product> productList;
+    private List<ProductDto> productList;
 
-    public ProductAdapter(List<Product> productList) {
+    public ProductAdapter(List<ProductDto> productList) {
         this.productList = productList;
     }
 
@@ -34,12 +34,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Product product = productList.get(position);
+        ProductDto product = productList.get(position);
         holder.tvName.setText(product.getName());
         holder.tvPrice.setText(String.valueOf(product.getPrice()));
         Picasso.get().load(product.getThumbnail()).into(holder.ivThumbnail);
 
-        holder.itemView.setOnClickListener(
+        holder.ivThumbnail.setOnClickListener(
                 v -> {
                     // Handle click event
                     Intent intent = new Intent(v.getContext(), ProductActivity.class);
@@ -55,9 +55,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private ImageView ivThumbnail;
-        private TextView tvName;
-        private TextView tvPrice;
+        public ImageView ivThumbnail;
+        public TextView tvName;
+        public TextView tvPrice;
 
         public ViewHolder(View itemView) {
             super(itemView);

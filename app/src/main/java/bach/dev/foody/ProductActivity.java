@@ -1,19 +1,18 @@
 package bach.dev.foody;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.squareup.picasso.Picasso;
 
-import bach.dev.foody.data.entities.Product;
+import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.model.ProductModel;
 import bach.dev.foody.ui.constract.ProductConstract;
 import bach.dev.foody.ui.presenter.ProductPresenter;
 import bach.dev.foody.util.Constants;
@@ -22,6 +21,9 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
     private ImageView ivThumbnail;
     private TextView tvName;
     private TextView tvPrice;
+    private ImageView ivFavourite;
+
+    private ProductDto productDto;
 
     ProductConstract.Presenter mPresenter;
     @Override
@@ -35,7 +37,7 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
     }
 
     private void initData() {
-        mPresenter = new ProductPresenter();
+        mPresenter = new ProductPresenter(this);
         mPresenter.setView(this);
         int productId = getIntent().getIntExtra(Constants.PRODUCT_ID, 0);
         mPresenter.getProduct(productId);
@@ -45,6 +47,22 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
         ivThumbnail = findViewById(R.id.iv_product_thumbnail);
         tvName = findViewById(R.id.tv_product_name);
         tvPrice = findViewById(R.id.tv_product_price);
+        ivFavourite = findViewById(R.id.iv_favourite);
+
+        ivFavourite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ProductModel product = new ProductModel(
+                        productDto.getName(),
+                        productDto.getDescription(),
+                        productDto.getThumbnail(),
+                        productDto.getPrice(),
+                        productDto.getQuantity(),
+                        productDto.getCategoryId()
+                );
+                mPresenter.setFavourite(product);
+            }
+        });
     }
 
     @Override
@@ -63,9 +81,20 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
     }
 
     @Override
-    public void showProduct(Product product) {
+    public void showProduct(ProductDto product) {
+        mPresenter.checkFavourite(product.getId());
+        productDto = product;
         tvName.setText(product.getName());
         tvPrice.setText(String.valueOf(product.getPrice()));
         Picasso.get().load(product.getThumbnail()).into(ivThumbnail);
+    }
+
+    @Override
+    public void setFavourite(boolean isFavourite) {
+        if(isFavourite) {
+            ivFavourite.setImageResource(R.drawable.ic_favourite);
+        } else {
+            ivFavourite.setImageResource(R.drawable.ic_not_favourite);
+        }
     }
 }

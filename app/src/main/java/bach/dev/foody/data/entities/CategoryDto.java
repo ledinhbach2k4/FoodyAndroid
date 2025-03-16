@@ -1,11 +1,11 @@
 package bach.dev.foody.data.entities;
 
-public class Category {
+public class CategoryDto {
     private int id;
     private String name;
     private String thumbnail;
 
-    public Category(int id, String name, String thumbnail) {
+    public CategoryDto(int id, String name, String thumbnail) {
         this.id = id;
         this.name = name;
         this.thumbnail = thumbnail;

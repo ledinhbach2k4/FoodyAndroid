@@ -1,6 +1,5 @@
 package bach.dev.foody.ui.adapter;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,21 +13,24 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
-import bach.dev.foody.ProductActivity;
 import bach.dev.foody.R;
-import bach.dev.foody.data.entities.Category;
-import bach.dev.foody.data.entities.Product;
+import bach.dev.foody.data.entities.CategoryDto;
 import bach.dev.foody.ui.constract.HomeConstract;
 import bach.dev.foody.util.CircleTransform;
-import bach.dev.foody.util.Constants;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
-    private List<Category> categoryList;
+    private List<CategoryDto> categoryList;
     private HomeConstract.Presenter mPresenter;
 
-    public CategoryAdapter(List<Category> categoryList, HomeConstract.Presenter presenter) {
+    public interface OnCategoryClickListener {
+        void onCategoryClick(CategoryDto category);
+    }
+
+    OnCategoryClickListener clickListener;
+
+    public CategoryAdapter(List<CategoryDto> categoryList, OnCategoryClickListener clickListener) {
         this.categoryList = categoryList;
-        this.mPresenter = presenter;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -40,7 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Category category = categoryList.get(position);
+        CategoryDto category = categoryList.get(position);
         holder.tvName.setText(category.getName());
         Picasso.get()
                 .load(category.getThumbnail())
@@ -50,8 +52,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         holder.itemView.setOnClickListener(
                 v -> {
                     // Handle click event
-                    Category cat = categoryList.get(position);
-                    mPresenter.getProductsByCategory(cat.getId());
+                    CategoryDto cat = categoryList.get(position);
+                    clickListener.onCategoryClick(cat);
                 }
         );
     }

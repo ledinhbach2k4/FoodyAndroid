@@ -4,8 +4,8 @@ import java.util.List;
 
 import bach.dev.foody.data.api.ApiService;
 import bach.dev.foody.data.api.RetrofitClient;
-import bach.dev.foody.data.entities.Category;
-import bach.dev.foody.data.entities.Product;
+import bach.dev.foody.data.entities.CategoryDto;
+import bach.dev.foody.data.entities.ProductDto;
 import bach.dev.foody.ui.constract.HomeConstract;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,10 +22,10 @@ public class HomePresenter implements HomeConstract.Presenter {
     public void getProducts() {
         mView.showLoading();
         // Call API to get products
-        Call<List<Product>> call = apiService.getProducts();
-        call.enqueue(new Callback<List<Product>>() {
+        Call<List<ProductDto>> call = apiService.getProducts();
+        call.enqueue(new Callback<List<ProductDto>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, retrofit2.Response<List<Product>> response) {
+            public void onResponse(Call<List<ProductDto>> call, retrofit2.Response<List<ProductDto>> response) {
                 mView.hideLoading();
                 if (response.isSuccessful()){
                     mView.showProducts(response.body());
@@ -35,7 +35,7 @@ public class HomePresenter implements HomeConstract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
                 mView.hideLoading();
                 mView.showError("Error: " + t.getMessage());
             }
@@ -45,10 +45,10 @@ public class HomePresenter implements HomeConstract.Presenter {
     @Override
     public void getCategories() {
         // Call API to get categories
-        Call<List<Category>> call = apiService.getCategories();
-        call.enqueue(new Callback<List<Category>>() {
+        Call<List<CategoryDto>> call = apiService.getCategories();
+        call.enqueue(new Callback<List<CategoryDto>>() {
             @Override
-            public void onResponse(Call<List<Category>> call, retrofit2.Response<List<Category>> response) {
+            public void onResponse(Call<List<CategoryDto>> call, retrofit2.Response<List<CategoryDto>> response) {
                 if (response.isSuccessful()){
                     mView.showCategories(response.body());
                 } else {
@@ -57,7 +57,7 @@ public class HomePresenter implements HomeConstract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<List<Category>> call, Throwable t) {
+            public void onFailure(Call<List<CategoryDto>> call, Throwable t) {
                 mView.showError("Error: " + t.getMessage());
             }
         });
@@ -66,10 +66,10 @@ public class HomePresenter implements HomeConstract.Presenter {
     @Override
     public void getProductsByCategory(int categoryId) {
         // Call API to get products by category
-        Call<List<Product>> call = apiService.getProductsByCategory(categoryId);
-        call.enqueue(new Callback<List<Product>>() {
+        Call<List<ProductDto>> call = apiService.getProductsByCategory(categoryId);
+        call.enqueue(new Callback<List<ProductDto>>() {
             @Override
-            public void onResponse(Call<List<Product>> call, retrofit2.Response<List<Product>> response) {
+            public void onResponse(Call<List<ProductDto>> call, retrofit2.Response<List<ProductDto>> response) {
                 if (response.isSuccessful()){
                     mView.showProducts(response.body());
                 } else {
@@ -78,7 +78,7 @@ public class HomePresenter implements HomeConstract.Presenter {
             }
 
             @Override
-            public void onFailure(Call<List<Product>> call, Throwable t) {
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
                 mView.showError("Error: " + t.getMessage());
             }
         });

@@ -12,8 +12,8 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import bach.dev.foody.R;
-import bach.dev.foody.data.entities.Category;
-import bach.dev.foody.data.entities.Product;
+import bach.dev.foody.data.entities.CategoryDto;
+import bach.dev.foody.data.entities.ProductDto;
 import bach.dev.foody.ui.adapter.CategoryAdapter;
 import bach.dev.foody.ui.adapter.ProductAdapter;
 import bach.dev.foody.ui.constract.HomeConstract;
@@ -61,15 +61,20 @@ public class HomeFragment extends Fragment implements HomeConstract.View {
     }
 
     @Override
-    public void showProducts(List<Product> productList) {
+    public void showProducts(List<ProductDto> productList) {
         ProductAdapter adapter = new ProductAdapter(productList);
         rvProduct.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showCategories(List<Category> categories) {
-        CategoryAdapter adapter = new CategoryAdapter(categories, mPresenter);
+    public void showCategories(List<CategoryDto> categories) {
+        CategoryAdapter adapter = new CategoryAdapter(categories, new CategoryAdapter.OnCategoryClickListener() {
+            @Override
+            public void onCategoryClick(CategoryDto category) {
+                mPresenter.getProductsByCategory(category.getId());
+            }
+        });
         rvCategory.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
