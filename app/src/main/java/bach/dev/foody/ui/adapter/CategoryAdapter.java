@@ -14,7 +14,7 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 import bach.dev.foody.R;
-import bach.dev.foody.data.entities.CategoryDto;
+import bach.dev.foody.data.dto.CategoryDto;
 import bach.dev.foody.ui.constract.HomeConstract;
 import bach.dev.foody.util.CircleTransform;
 

@@ -2,8 +2,8 @@ package bach.dev.foody.ui.constract;
 
 import java.util.List;
 
-import bach.dev.foody.data.entities.CategoryDto;
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.CategoryDto;
+import bach.dev.foody.data.dto.ProductDto;
 
 public interface HomeConstract {
     interface View {
@@ -19,5 +19,6 @@ public interface HomeConstract {
         void getProducts();
         void getCategories();
         void getProductsByCategory(int categoryId);
+        void searchProduct(String keyword);
     }
 }

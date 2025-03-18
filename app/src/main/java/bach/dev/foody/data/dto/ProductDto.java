@@ -1,4 +1,4 @@
-package bach.dev.foody.data.entities;
+package bach.dev.foody.data.dto;
 
 public class ProductDto {
     private int id;

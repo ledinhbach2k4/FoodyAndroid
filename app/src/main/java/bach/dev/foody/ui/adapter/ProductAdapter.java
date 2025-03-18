@@ -15,7 +15,7 @@ import java.util.List;
 
 import bach.dev.foody.ProductActivity;
 import bach.dev.foody.R;
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.util.Constants;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHolder> {

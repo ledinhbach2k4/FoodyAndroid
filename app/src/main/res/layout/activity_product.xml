@@ -38,7 +38,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="30dp">
         <TextView
             android:text="Chat"
             android:layout_width="0dp"
@@ -47,11 +48,13 @@
             android:padding="10dp"
             android:gravity="center"/>
         <TextView
+            android:id="@+id/tv.add.to.cart"
             android:text="Add To Cart"
             android:layout_width="0dp"
             android:layout_weight="2"
             android:layout_height="wrap_content"
             android:padding="10dp"
+            android:clickable="true"
             android:gravity="center"/>
     </LinearLayout>
 </LinearLayout>

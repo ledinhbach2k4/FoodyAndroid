@@ -11,7 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.data.model.ProductModel;
 import bach.dev.foody.ui.constract.ProductConstract;
 import bach.dev.foody.ui.presenter.ProductPresenter;
@@ -22,6 +22,7 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
     private TextView tvName;
     private TextView tvPrice;
     private ImageView ivFavourite;
+    private TextView tvAddToCart;
 
     private ProductDto productDto;
 
@@ -48,21 +49,10 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
         tvName = findViewById(R.id.tv_product_name);
         tvPrice = findViewById(R.id.tv_product_price);
         ivFavourite = findViewById(R.id.iv_favourite);
+        ivFavourite.setOnClickListener(listener);
 
-        ivFavourite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ProductModel product = new ProductModel(
-                        productDto.getName(),
-                        productDto.getDescription(),
-                        productDto.getThumbnail(),
-                        productDto.getPrice(),
-                        productDto.getQuantity(),
-                        productDto.getCategoryId()
-                );
-                mPresenter.setFavourite(product);
-            }
-        });
+        tvAddToCart = findViewById(R.id.tv_add_to_cart);
+        tvAddToCart.setOnClickListener(listener);
     }
 
     @Override
@@ -97,4 +87,33 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
             ivFavourite.setImageResource(R.drawable.ic_not_favourite);
         }
     }
+
+    private View.OnClickListener listener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if(view.getId() == R.id.iv_favourite){
+                actionFavourite();
+            }
+            if(view.getId() == R.id.tv_add_to_cart){
+                addToCart();
+            }
+        }
+
+        private void actionFavourite() {
+            ProductModel product = new ProductModel(
+                    productDto.getName(),
+                    productDto.getDescription(),
+                    productDto.getThumbnail(),
+                    productDto.getPrice(),
+                    productDto.getQuantity(),
+                    productDto.getCategoryId()
+            );
+            mPresenter.setFavourite(product);
+        }
+
+        private void addToCart() {
+            // Add product to cart
+            //Check authentication
+        }
+    };
 }

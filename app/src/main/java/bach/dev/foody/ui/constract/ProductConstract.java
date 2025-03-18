@@ -1,6 +1,8 @@
 package bach.dev.foody.ui.constract;
 
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.OrderItemDto;
+import bach.dev.foody.data.dto.ProductDto;
+import bach.dev.foody.data.dto.UserDto;
 import bach.dev.foody.data.model.ProductModel;
 
 public interface ProductConstract {
@@ -17,5 +19,6 @@ public interface ProductConstract {
         void getProduct(int productId);
         void setFavourite(ProductModel product);
         void checkFavourite(int productId);
+        void addToCart(OrderItemDto orderItemDto);
     }
 }

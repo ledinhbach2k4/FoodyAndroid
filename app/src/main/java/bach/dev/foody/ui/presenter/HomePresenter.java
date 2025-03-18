@@ -4,8 +4,8 @@ import java.util.List;
 
 import bach.dev.foody.data.api.ApiService;
 import bach.dev.foody.data.api.RetrofitClient;
-import bach.dev.foody.data.entities.CategoryDto;
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.CategoryDto;
+import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.ui.constract.HomeConstract;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -80,6 +80,30 @@ public class HomePresenter implements HomeConstract.Presenter {
             @Override
             public void onFailure(Call<List<ProductDto>> call, Throwable t) {
                 mView.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
+    public void searchProduct(String keyword) {
+        // Call API to search products
+        mView.showLoading();
+        Call<List<ProductDto>> call = apiService.searchProducts(keyword);
+        call.enqueue(new Callback<>() {
+            @Override
+            public void onResponse(Call<List<ProductDto>> call, retrofit2.Response<List<ProductDto>> response) {
+                if (response.isSuccessful()) {
+                    mView.showProducts(response.body());
+                } else {
+                    mView.showError("Error: " + response.message());
+                }
+                mView.hideLoading();
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
+                mView.showError("Error: " + t.getMessage());
+                mView.hideLoading();
             }
         });
     }

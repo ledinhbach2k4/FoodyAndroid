@@ -1,16 +1,22 @@
 package bach.dev.foody.ui.presenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import bach.dev.foody.LoginActivity;
+import bach.dev.foody.auth.Auth;
 import bach.dev.foody.data.api.ApiService;
 import bach.dev.foody.data.api.RetrofitClient;
 import bach.dev.foody.data.dao.ProductDao;
-import bach.dev.foody.data.entities.ProductDto;
+import bach.dev.foody.data.dto.OrderItemDto;
+import bach.dev.foody.data.dto.ProductDto;
+import bach.dev.foody.data.dto.UserDto;
 import bach.dev.foody.data.model.ProductModel;
 import bach.dev.foody.data.room.RoomHelper;
 import bach.dev.foody.ui.constract.ProductConstract;
@@ -96,5 +102,39 @@ public class ProductPresenter implements ProductConstract.Presenter {
                 }
             });
         });
+    }
+
+    @Override
+    public void addToCart(OrderItemDto orderItemDto) {
+        //Chek auth
+        Auth auth = new Auth(context);
+//        if(!auth.isLoggedIn()){
+//            redirectToLogin();
+//        }else{
+            // Add to cart
+            UserDto userDto = new UserDto(auth.getUserEmail(), "");
+            Call<OrderItemDto> call = apiService.addToCart(1, orderItemDto);
+            call.enqueue(new retrofit2.Callback<OrderItemDto>() {
+                @Override
+                public void onResponse(Call<OrderItemDto> call, retrofit2.Response<OrderItemDto> response) {
+                    if (response.isSuccessful()) {
+                        Log.i("success", response.body().toString());
+                        view.showError("Thêm vào giỏ hàng thành công");
+                    } else {
+                        view.showError("Error: " + response.message());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<OrderItemDto> call, Throwable t) {
+                    view.showError("Error: " + t.getMessage());
+                }
+            });
+//        }
+    }
+
+    private void redirectToLogin() {
+        Intent intent = new Intent(context, LoginActivity.class);
+        context.startActivity(intent);
     }
 }
