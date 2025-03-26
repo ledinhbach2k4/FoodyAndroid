@@ -17,6 +17,7 @@ public interface HomeConstract {
     interface Presenter {
         void setView(View view);
         void getProducts();
+        void getProductsByProperty(String property, String order);
         void getCategories();
         void getProductsByCategory(int categoryId);
         void searchProduct(String keyword);

@@ -14,6 +14,7 @@ import bach.dev.foody.auth.Auth;
 import bach.dev.foody.data.api.ApiService;
 import bach.dev.foody.data.api.RetrofitClient;
 import bach.dev.foody.data.dao.ProductDao;
+import bach.dev.foody.data.dto.OrderDto;
 import bach.dev.foody.data.dto.OrderItemDto;
 import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.data.dto.UserDto;
@@ -113,7 +114,7 @@ public class ProductPresenter implements ProductConstract.Presenter {
 //        }else{
             // Add to cart
             UserDto userDto = new UserDto(auth.getUserEmail(), "");
-            Call<OrderItemDto> call = apiService.addToCart(1, orderItemDto);
+            Call<OrderItemDto> call = apiService.addToCart(orderItemDto);
             call.enqueue(new retrofit2.Callback<OrderItemDto>() {
                 @Override
                 public void onResponse(Call<OrderItemDto> call, retrofit2.Response<OrderItemDto> response) {
@@ -131,6 +132,30 @@ public class ProductPresenter implements ProductConstract.Presenter {
                 }
             });
 //        }
+    }
+
+    @Override
+    public void getOrderByStatus(int userId, String status, OrderItemDto orderItemDto) {
+        Call<OrderDto> call = apiService.getOrderByStatus(userId, status);
+        call.enqueue(new retrofit2.Callback<OrderDto>() {
+            @Override
+            public void onResponse(Call<OrderDto> call, retrofit2.Response<OrderDto> response) {
+                if (response.isSuccessful()) {
+                    Log.i("success", response.body().toString());
+                    OrderDto orderDto = response.body();
+                    orderItemDto.setOrderId(orderDto.getId());
+
+                    addToCart(orderItemDto);
+                } else {
+                    view.showError("Error: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrderDto> call, Throwable t) {
+                view.showError("Error: " + t.getMessage());
+            }
+        });
     }
 
     private void redirectToLogin() {

@@ -43,6 +43,30 @@ public class HomePresenter implements HomeConstract.Presenter {
     }
 
     @Override
+    public void getProductsByProperty(String property, String order) {
+        // Call API to get products by property
+        mView.showLoading();
+        Call<List<ProductDto>> call = apiService.getProductsByProperty(property, order);
+        call.enqueue(new Callback<List<ProductDto>>() {
+            @Override
+            public void onResponse(Call<List<ProductDto>> call, retrofit2.Response<List<ProductDto>> response) {
+                mView.hideLoading();
+                if (response.isSuccessful()){
+                    mView.showProducts(response.body());
+                } else {
+                    mView.showError("Error: " + response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ProductDto>> call, Throwable t) {
+                mView.hideLoading();
+                mView.showError("Error: " + t.getMessage());
+            }
+        });
+    }
+
+    @Override
     public void getCategories() {
         // Call API to get categories
         Call<List<CategoryDto>> call = apiService.getCategories();

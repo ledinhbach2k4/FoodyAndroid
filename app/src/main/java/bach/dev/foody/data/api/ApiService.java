@@ -3,6 +3,7 @@ package bach.dev.foody.data.api;
 import java.util.List;
 
 import bach.dev.foody.data.dto.CategoryDto;
+import bach.dev.foody.data.dto.OrderDto;
 import bach.dev.foody.data.dto.OrderItemDto;
 import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.data.dto.UserDto;
@@ -38,8 +39,14 @@ public interface ApiService {
      * Api cart
      */
 
-    @POST("/cart/add-to-cart")
+    @POST("cart/add-to-cart")
     Call<OrderItemDto> addToCart(
-            @Header("User-Id") int userId,
             @Body OrderItemDto orderItemDto);
+
+    @GET("orders/get-by-status")
+    Call<OrderDto> getOrderByStatus(@Query("userId") int userId,@Query("status") String status);
+
+
+    @GET("products/filter")
+    Call<List<ProductDto>> getProductsByProperty(@Query("property") String property,@Query("order") String order);
 }

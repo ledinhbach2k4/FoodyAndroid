@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.squareup.picasso.Picasso;
 
+import bach.dev.foody.data.dto.OrderDto;
+import bach.dev.foody.data.dto.OrderItemDto;
 import bach.dev.foody.data.dto.ProductDto;
 import bach.dev.foody.data.model.ProductModel;
 import bach.dev.foody.ui.constract.ProductConstract;
@@ -87,7 +89,6 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
             ivFavourite.setImageResource(R.drawable.ic_not_favourite);
         }
     }
-
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -112,8 +113,14 @@ public class ProductActivity extends AppCompatActivity implements ProductConstra
         }
 
         private void addToCart() {
-            // Add product to cart
-            //Check authentication
+            //Get Order by userID and Status
+            OrderItemDto orderItemDto = new OrderItemDto(
+                    productDto.getId(),
+                    1,
+                    100,
+                    productDto.getPrice()
+            );
+            mPresenter.getOrderByStatus(1, "pending", orderItemDto);
         }
     };
 }
